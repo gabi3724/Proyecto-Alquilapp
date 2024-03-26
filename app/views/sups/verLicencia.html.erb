@@ -1,0 +1,37 @@
+<div class="container mt-2">
+
+    <%= image_tag @usuario.lic.foto, style: "width: 570px; display: block"%>
+    <br>
+    <% if @usuario.lic.en_revision? %>
+        <%= form_tag( "/actualizarDocumentos", method: "get") do %>
+            <%= hidden_field_tag(:id, @usuario.id) %>
+            <%= hidden_field_tag(:tipo, "rechazarLic") %>
+            <h6 class="mb-3">Motivo del rechazo</h6>
+            <%= text_field_tag 'descripcion', nil, required: true, placeholder: 'Motivo del rechazo' %>
+            <%= submit_tag("Rechazar", class:"btn btn-danger") %>
+        <% end %>
+        <%= form_tag( "/actualizarDocumentos", method: "get") do %>
+            <%= hidden_field_tag(:id, @usuario.id) %>
+            <%= hidden_field_tag(:tipo, "aprobarLic") %>
+            <h6 class="mt-3 mb-3">Vencimiento de la licencia</h6>
+            <%= date_field_tag 'vencimiento', nil, required: true, min: DateTime.current.to_date %>
+            <%= submit_tag("Aprobar", class:"btn btn-success") %>
+        <% end %>
+        <%= link_to "Volver atras", {controller: "sups", action: "listaValidacion"}, class: "btn btn-primary-orange mt-3" %>
+    <% elsif @usuario.lic.aceptado? %>
+        <p class="fw-bold">Licencia aprobada</p>
+        <% if !@usuario.lic.vencimiento.nil? %>
+            <p class="fw-light">Vencimiento: <%= @usuario.lic.vencimiento.to_time.strftime("%e/%m/%Y") %></p> 
+        <% end %>
+        <%= link_to "Reevaluar", {controller: "sups", action: "actualizarDocumentos", id: @usuario.id, tipo: "reevaluarLic"}, class: "btn btn-danger" %>
+        <%= link_to "Volver atras", {controller: "sups", action: "listaValidacion"}, class: "btn btn-primary-orange" %>
+    <% else %>
+        <p class="fw-bold">Licencia rechazada</p> 
+        <% if !@usuario.lic.descripcion.nil? %>
+            <p class="fw-light">Motivo: <%= @usuario.lic.descripcion %></p> 
+        <% end %>
+        <%= link_to "Reevaluar", {controller: "sups", action: "actualizarDocumentos", id: @usuario.id, tipo: "reevaluarLic"}, class: "btn btn-danger" %>
+        <%= link_to "Volver atras", {controller: "sups", action: "listaValidacion"}, class: "btn btn-primary-orange" %>  
+    <% end %>
+    
+</div>

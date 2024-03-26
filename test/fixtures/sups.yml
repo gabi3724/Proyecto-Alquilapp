@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  DNI: MyString
+  fecha_nacimiento: 2022-10-24 13:57:10
+  password: MyString
+  rol: MyString
+  auto_id: 1
+  nombre_completo: MyString
+
+two:
+  DNI: MyString
+  fecha_nacimiento: 2022-10-24 13:57:10
+  password: MyString
+  rol: MyString
+  auto_id: 1
+  nombre_completo: MyString

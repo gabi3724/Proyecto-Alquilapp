@@ -1,0 +1,33 @@
+<h1 class="text-center mb-5">Problema tomado</h1>
+<div class="row ms-sm-3">
+    <div class="col col-md-5">
+        <%= image_tag @problema.foto ,class:"img-fluid mb-3"%>
+        <p> Descripción: <%= @problema.descripcion %> </p>
+        <table width="100%">
+            <tr>
+                <%= form_tag explicacionDejar_path, method: "get" do %>    
+                    <%= hidden_field_tag :problema_id, @problema.id %> 
+                    <td class="text-start"> <%= submit_tag "Dejar problema", class: "btn btn-danger" %> </td>
+                <% end %>
+                <td class="text-center"> <%= link_to "Auto", @problema.auto, class: "btn btn-primary" %> </td>
+                <%= form_tag resolucion_path, method: "get" do %>  
+                    <%= hidden_field_tag :problema_id, @problema.id %> 
+                    <td class="text-end"> <%= submit_tag "Solucionar problema", class: "btn btn-primary-orange" %> </td>
+                <% end %>
+            </tr>
+        </table>
+    </div>
+    <div class="col">
+        <div id="map" style="height: 470px; width: 710px"></div>
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiZ2FiaTM3MjQiLCJhIjoiY2w5Zm43enV5MDN0dzNucHUzbnAxaGUxNyJ9.06vvj5pL-rNyNTvGwi1IFA';
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: ['<%= @problema.auto.ubicacion.y %>', '<%= @problema.auto.ubicacion.x %>'],
+                zoom: 15
+            });
+            const marker1 = new mapboxgl.Marker().setLngLat(['<%= @problema.auto.ubicacion.y %>', '<%= @problema.auto.ubicacion.x %>']).addTo(map); 
+        </script> 
+    </div>
+</div>

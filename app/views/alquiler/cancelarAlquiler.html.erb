@@ -1,0 +1,19 @@
+<div class="container mt-2">
+
+<% if (@alquiler.created_at + 10.minutes < DateTime.now) || (@alquiler.auto.porcentaje_tanque != @alquiler.porcentaje_tanque_inicial) %>
+    <p>El alquiler no se puede cancelar porque ya pasó el tiempo permitido o porque ya gastó combustible</p>
+<% else %>
+    <%= form_tag("/alquiler/cancelacion", method: "get") do %>
+        <h4>Confirmar cancelación del alquiler</h4>
+        <%= hidden_field_tag(:alquiler_id, @alquiler.id) %>
+        <h6>Tiene que agregar el motivo de la cancelación. Como mínimo se aceptan 25 caracteres.</h6>
+        <%= text_area_tag 'descripcion', nil, required: true, minlength: 25, cols: 57 %>
+        <br>
+        <h6>Se retornaran $<%= @alquiler.costo %></h6>
+        <h6>¿Está seguro de que quiere cancelar el alquiler actual?</h6>
+        <%= submit_tag("Cancelar alquiler", class:"btn btn-success") %>
+        <%= link_to "Volver a atras", @alquiler, class: "btn btn-danger" %>
+    <% end %>
+<% end %>
+
+</div>

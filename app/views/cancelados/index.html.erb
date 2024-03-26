@@ -1,0 +1,33 @@
+<div class="container mt-2">
+    <% if @cancelados.count > 0 %>
+        <table class="table table-bordered"">
+        <thead>
+            <tr>
+                <th scope="col">Cliente</th>
+                <th scope="col">Auto</th>
+                <th scope="col">Motivo</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+            </tr>
+        </thead>
+        <tbody>
+        <% @cancelados.each do |c| %>
+            <tr>
+                <td class="align-middle"><%= link_to c.usuario.dni, c.usuario, class: "btn btn-light" %></td>
+                <% if @autos.where(patente: c.patente).exists? %>
+                    <% auto = @autos.find_by(patente: c.patente) %>
+                    <td class="align-middle"><%= link_to auto.patente, auto, class: "btn btn-light" %></td>
+                <% else %>
+                    <td class="align-middle"><button type="button" class="btn btn-light text-danger" disabled><%= c.patente %></button></td>
+                <% end %>
+                <td class="align-middle"><%= c.motivo %></td>
+                <td class="align-middle"><%= c.created_at.strftime("%d/%m/%y")%></td>
+                <td class="align-middle"><%= c.created_at.strftime("%H:%M:%S")%></td>
+            </tr>
+        <% end %>
+        </tbody>
+        </table>
+    <% else %>
+        <h1>No hay alquileres cancelados</h1>
+    <% end %>
+</div>

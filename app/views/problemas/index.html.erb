@@ -1,0 +1,7 @@
+<% if @problemas!=nil %>
+    <% @problemas.each do |problema| %>
+        <%= render "problema", problema: problema, status: :see_other %>
+    <% end %>
+<% else %>
+    <h1>No hay problemas reportados</h1>
+<% end %>

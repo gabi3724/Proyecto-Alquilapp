@@ -1,0 +1,24 @@
+<h1 class="text-center mb-3">Confirmar cambios</h1>
+
+<% flash.each do |tipo, msj| %>
+    <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+        <%= msj %>
+    </div>
+<% end %>
+
+<div class="d-flex justify-content-center">
+    <div class="w-50">
+        <%= form_tag update_perfil_path, method: "get" do%>    
+            <%= hidden_field_tag :dni, @dni %>
+            <div class="mb-3">
+                <%= label_tag :password, "Contraseña:", class:"form-label" %>
+                <%= password_field_tag :password, nil, placeholder: "Contraseña", class:"form-control" %>
+            </div>
+            <%= hidden_field_tag :fecha_nacimiento, @fecha %>
+            <div class="mb-3 d-flex justify-content-center">
+                <%= link_to "Cancelar", edit_perfil_path, class: "btn btn-danger mx-2" %>
+                <%= submit_tag "Confirmar", class: "btn btn-success mx-2" %>
+            </div>
+        <% end %>
+    </div>
+</div>

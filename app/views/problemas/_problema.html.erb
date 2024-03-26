@@ -1,0 +1,23 @@
+<div class="border-top-0">
+    <div class="row border-top py-3 px-3">
+        <div class="col col-md-3">
+            <%= image_tag problema.foto ,class:"img-fluid"%>
+        </div>
+        <div class="col">
+            <table width="100%">
+                <tr>
+                    <td> <p>Patente: <%= problema.auto.patente %> </p> </td>
+                    <td class="text-end"> <p>Fecha: <%= problema.created_at.strftime("%d/%m/%Y %H:%M:%S") %> </p> </td>
+                </tr>
+            </table>
+            <p> Descripción: <%= problema.descripcion %> </p>
+        </div>
+        <div class="col col-md-2 my-auto">
+            <div class="d-flex justify-content-center ">
+                <% if sup_actual.problema.nil? %>
+                    <%= link_to "Tomar problema", problema, class: "btn btn-primary-orange text-center" %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

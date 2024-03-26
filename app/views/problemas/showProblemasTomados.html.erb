@@ -1,0 +1,7 @@
+<% if !@problemas.empty? %>
+    <% @problemas.each do |problema| %>
+        <%= render "problemaTomado", problema: problema %>
+    <% end %>
+<% else %>
+    <h1>No hay problemas tomados</h1>
+<% end %>

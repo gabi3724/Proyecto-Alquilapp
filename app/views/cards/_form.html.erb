@@ -1,0 +1,26 @@
+<div class="d-flex justify-content-center">
+    <div class="w-50">
+		<%= form_for @card do |f| %>
+			<div class="mb-3">
+				<%= f.label :numero, "Número:", class:"form-label" %>
+				<%= f.text_field :numero, placeholder: "Número (sin espacios ni guiones)",class:"form-control" %>
+			</div>
+			<div class="mb-3">
+				<%= f.label :codigo, "Código:", class:"form-label" %>
+				<%= f.password_field :codigo, placeholder: "Código",class:"form-control w-35" %>
+			</div>
+			<div class="mb-3">
+				<%= f.label :titular, "Nombre completo del titular:", class:"form-label" %>
+				<%= f.text_field :titular, placeholder: "Titular",class:"form-control" %>
+			</div>
+			<div class="mb-3">
+				<%= f.label :fecha_vencimiento, "Fecha de vencimiento:", class:"form-label" %>
+				<%= f.date_field :fecha_vencimiento, min: Date.today, class:"form-control w-35 text-center" %>
+			</div>
+			<%= f.hidden_field :usuario_id, :value => usuario_actual.id %>
+			<div class="mb-3 d-flex justify-content-center">
+				<%= f.submit "Cargar tarjeta", class: "btn btn-primary-orange w-25" %>
+			</div>
+		<% end %>
+	</div>
+</div>

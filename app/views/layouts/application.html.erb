@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Alquilapp</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <style>
+        .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            }
+    </style>
+  </head>
+
+  <body>
+    <div class="d-print-none" >
+      <nav class="navbar navbar-expand-lg" style="background-color: #fa840f;">
+        <div class="container-fluid">
+          <span class="navbar-brand mb-0 h1">
+            <%= image_tag "Logo_3.png", width: 40, height: 27, class: "d-inline-block align-text-top" %>
+            <%= link_to "Alquilapp", root_path, class: "btn btn-outline-dark" %>
+          </span>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <% if admin_logueado? %>
+                <li class="nav-item">
+                  <%= link_to "Agregar auto", new_auto_path, class:"nav-link" %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to "Supervisores", sups_path, class:"nav-link" %>
+                </li>
+                <li>
+                  <%= link_to "Problemas tomados", showProblemasTomados_path, class: "nav-link" %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to "Alquileres cancelados", {controller: "cancelados", action: "index"}, class:"nav-link" %>
+                </li>
+              <% elsif sup_logueado? %>
+                <li class="nav-item">
+                  <%= link_to "Validar clientes", {controller: "sups", action: "listaValidacion"}, class: "nav-link" %>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Problemas
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><%= link_to "Problemas a tomar", problemas_path, class: "dropdown-item" %></li>
+                    <li><%= link_to "Problemas tomados", showProblemasTomados_path, class: "dropdown-item" %></li>
+                  </ul>
+                </li>
+              <% elsif usuario_logueado? %>
+                <li class="nav-item">
+                  <% if usuario_actual.auto_id != nil %>
+                    <% if (usuario_actual.fecha_ultimo_alquiler + 1.day > DateTime.now) %>
+                      <%= link_to "Reportar problema", new_problema_path, class: "nav-link" %>
+                    <% else %>
+                      <a class="nav-link" href="#">Funcionalidad</a>
+                    <% end %>
+                  <% else %>
+                    <a class="nav-link" href="#">Funcionalidad</a>
+                  <% end %>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Funcionalidad</a>
+                </li>
+              <% else %>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Funcionalidad</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Funcionalidad</a>
+                </li>
+              <% end %>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Opciones
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <% if alquilando? %>
+                  <%= link_to "Alquiler Actual", alquiler_actual, class:"nav-link" %>
+                <% elsif sup_logueado? && !sup_actual.problema.nil?%>
+                  <%= link_to "Problema tomado", sup_actual.problema, class:"nav-link" %>
+                <% end %>
+              </li>
+            </ul>
+            <ul class="navbar-nav me-0 mb-2 mb-lg-0">
+              <% if !(usuario_logueado? || sup_logueado? || admin_logueado?) %>
+                  <li class="nav-item">
+                    <a class="nav-link" href=<%= login_path %>>Iniciar sesión</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href=<%= new_usuario_path %>>Registrarse</a>
+                  </li>
+              <% else %>
+                <% if usuario_logueado? %>
+                  <% if usuario_actual.validado  %>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Saldo: $<% if usuario_actual.creditos? %><%= usuario_actual.creditos %><% else %>0<% end %></a>
+                    </li>
+                  <% end %>
+                <% end %>
+                <li class="nav-item">
+                  <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <% if usuario_logueado? %>  
+                      Cliente: <%= usuario_actual.dni %>
+                    <% elsif sup_logueado? %>
+                      Supervisor: <%= sup_actual.dni %>
+                    <% elsif admin_logueado? %>
+                      Administrador: <%= admin_actual.dni %>
+                    <% end %>
+                  </a>
+                  <ul class="dropdown-menu" style="right: 0; left: auto;">
+                    <% if usuario_logueado? %>
+                      <li><a class="dropdown-item" href=<%= usuario_path(usuario_actual) %>>Perfil</a></li>
+                    <% elsif sup_logueado? %>
+                      <li><a class="dropdown-item" href=<%= sup_path(sup_actual) %>>Perfil</a></li>
+                    <% elsif admin_logueado? %>
+                      <li><a class="dropdown-item" href=<%= admin_path(admin_actual) %>>Perfil</a></li>
+                      <li><a class="dropdown-item" href=<%= costo_alquiler_path %>>Modificar costo alquiler</a></li>
+                    <%end%>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href=<%= logout_path %>>Cerrar sesión</a></li>
+                  </ul>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

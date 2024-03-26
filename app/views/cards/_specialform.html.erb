@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-center">
+    <div class="w-50">
+        <%= form_tag special_create_path, method: "get" do%>    
+            <div class="mb-3">
+                <%= label_tag :numero, "Número:", class:"form-label" %>
+                <%= text_field_tag :numero, nil, placeholder:"Número (sin espacios ni guiones)", class:"form-control" %>
+            </div>
+            <div class="mb-3">
+                <%= label_tag :codigo, "Código:", class:"form-label" %>
+                <%= password_field_tag :codigo, nil, placeholder: "Código", class:"form-control" %>
+            </div>
+            <div class="mb-3">
+                <%= label_tag :titular, "Nombre completo del titular:", class:"form-label" %>
+                <%= text_field_tag :titular, nil, placeholder:"Titular", class:"form-control" %>
+            </div>
+            <div class="mb-3">
+                <%= label_tag :month, "Fecha de vencimiento:", class:"form-label" %>
+                <div class="row">
+                    <div class="col col-md-3">
+                        <%= select_tag(:month, options_for_select([['Enero', '1'], ['Febrero', 2], ['Marzo', 3], ['Abril', 4], ['Mayo', 5], ['Junio', 6], ['Julio', 7], ['Agosto', 8], ['Septiembre', 9], ['Octubre', 10], ['Noviembre', 11], ['Diciembre', 12]]), class: "form-select text-center") %>
+                    </div>
+                    <div class="col col-md-2">
+                        <%= select_tag(:year, options_for_select([['2022', 2022], ['2023', 2023], ['2024', 2024], ['2025', 2025], ['2026', 2026], ['2027', 2027], ['2028', 2028], ['2029', 2029], ['2030', 2030], ['2031', 2031], ['2032', 2032], ['2033', 2033], ['2034', 2034], ['2035', 2035], ['2036', 2036], ['2037', 2037], ['2038', 2038], ['2039', 2039], ['2040', 40]]), class: "form-select text-center") %>
+                    </div>
+                </div>
+            </div>
+            <%= hidden_field_tag :usuario_id, usuario_actual.id %>
+            <div class="mb-3 d-flex justify-content-center">   
+                <%= submit_tag "Cargar tarjeta", class: "btn btn-primary-orange w-25" %>
+            </div>
+        <% end %>
+	</div>
+</div>

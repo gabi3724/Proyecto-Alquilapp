@@ -1,0 +1,48 @@
+<div class="container mt-2">
+
+    <% if @auto.errors.any? %>
+        <div class="mb-3">
+            <% @auto.errors.full_messages.each do |msj| %>
+                <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+                    <%= msj %>
+                </div>
+            <% end %>
+        </div>
+    <% end %>
+
+    <h1 class="text-center mb-3">Cambiar imagen del auto <%= @auto.marca %> <%= @auto.modelo %></h1>
+    <div class="d-flex justify-content-center">
+        <%= form_for @auto, url: {controller: "autos", action: "update_foto", params: {id: @auto.id}} do |f| %>
+            <img id="foto" class="img-fluid" style="max-width:600px;  width:100%;">
+            <%= f.file_field :foto, :accept => 'image/jpeg, image/png', onchange: "previewImage(event, '#foto')", class:"form-control mt-3"%>
+    </div>
+    <div class="d-flex justify-content-center">
+            <%= link_to "Cancelar", auto_path(@auto), class: "btn btn-danger mt-3 mx-2" %>
+            <%= f.submit "Confirmar", class: "btn btn-success mt-3 mx-2" %>
+        <% end %>
+    </div>
+
+  <script>
+  function previewImage(event, querySelector){
+
+      //Recuperamos el input que desencadeno la acción
+      const input = event.target;
+      
+      //Recuperamos la etiqueta img donde cargaremos la imagen
+      $imgPreview = document.querySelector(querySelector);
+
+      // Verificamos si existe una imagen seleccionada
+      if(!input.files.length) return
+      
+      //Recuperamos el archivo subido
+      file = input.files[0];
+
+      //Creamos la url
+      objectURL = URL.createObjectURL(file);
+      
+      //Modificamos el atributo src de la etiqueta img
+      $imgPreview.src = objectURL;
+  }
+  </script>
+
+</div>

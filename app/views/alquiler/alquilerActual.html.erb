@@ -1,0 +1,20 @@
+<h2 class="my-4 ms-sm-4">Información del alquiler</h2>
+
+<div class="row ms-sm-4">
+    <div class="col col-md-4">
+        <h5 class="row mb-3"> Auto en alquiler: </h5>
+        <h5 class="row mb-3"> Cliente alquilando: </h5>
+        <h5 class="row mb-3"> Tiempo de alquiler en horas: </h5>
+        <h5 class="row mb-3"> Costo de alquiler: </h5>
+        <h5 class="row mb-3"> Créditos actuales del cliente: </h5>
+        <h5 class="row mb-3"> Hora de inicio: </h5>
+    </div>
+    <div class="col col-md-4">
+        <div class="row mb-3"> <%= @alquiler.auto.marca %> </div>
+        <div class="row mb-3"> <%= @alquiler.usuario.dni %> </div>
+        <div class="row mb-3"> <%= @alquiler.horas %></div>
+        <div class="row mb-3"> <%= @alquiler.costo %> </div>
+        <div class="row mb-3"> <%= @alquiler.usuario.creditos %> </div>
+        <div class="row mb-3"> <%= @alquiler.created_at %> </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
+
+.w-35{
+    width: 35% !important;
+}
+
+.btn-primary-orange {
+    --bs-btn-color: rgb(0, 0, 0);
+    --bs-btn-bg: #fd8d0d;
+    --bs-btn-border-color: #fd8d0d;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #fd8d0d;
+    --bs-btn-hover-border-color: #fd8d0d;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #fd8d0d;
+    --bs-btn-active-border-color: #fd8d0d;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #fd8d0d;
+    --bs-btn-disabled-border-color: #fd8d0d;
+    }

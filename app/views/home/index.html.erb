@@ -1,0 +1,94 @@
+<div id="map" style="height: 800px;"></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiZ2FiaTM3MjQiLCJhIjoiY2w5Zm43enV5MDN0dzNucHUzbnAxaGUxNyJ9.06vvj5pL-rNyNTvGwi1IFA';
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-57.954513788201005,-34.92116106152612],
+    zoom: 13.3
+});
+
+<% if usuario_logueado? %>
+    <% if alquilando? %>
+        const marker1 = new mapboxgl.Marker().setLngLat(['<%= alquiler_actual.auto.ubicacion.y %>', '<%= alquiler_actual.auto.ubicacion.x %>']).addTo(map);  
+    <% end %>
+<% end %>
+
+<% if sup_logueado? %>
+    const marker1 = new mapboxgl.Marker().setLngLat(['<%= sup_actual.ubicacion.y %>', '<%= sup_actual.ubicacion.x %>']).addTo(map);
+<% end %>
+
+map.rotateTo(42);
+
+map.on('load', () => {
+    map.addSource('points', {
+        'type': 'geojson',
+        'data': {
+        'type': 'FeatureCollection',
+        'features': [
+            <% if (admin_logueado? || sup_logueado?) %>
+                <% @autos.each do |auto| %>
+                    {
+                    'type': 'Feature',
+                    'properties': {'description': '<%= image_tag auto.foto, style: "height: 100px; width: 200px; display: block"%> <br> <p>Marca: <%= auto.marca %> <br> Modelo: <%= auto.modelo %> <br> <% if auto.tipo_de_motor == "Combustion" %> Combustible: <%= auto.porcentaje_tanque %> L <% else%> Carga: <%= auto.porcentaje_tanque %>% <%end%> <br> Autonomia: <%= auto.autonomia %> KM <br> <% if auto.alquilado %> Auto alquilado <% else %> Auto no alquilado <% end %> <br> <%= link_to "Mas informacion", auto %> <br> <%= form_tag("/autos/actualizar_datos", method: "get") do %><%= hidden_field_tag(:auto_id, auto.id) %><%= submit_tag("Actualizar") %><% end %></p>'},
+                    'geometry': {'type': 'Point', 'coordinates': ['<%= auto.ubicacion.y %>', '<%= auto.ubicacion.x %>']}
+                    },
+                <% end %>
+            <% else %>
+                <% @autos.each do |auto| %>
+                    <% if (!(auto.alquilado)) then %>
+                        {
+                        'type': 'Feature',
+                        'properties': {'description': '<%= image_tag auto.foto, style: "height: 100px; width: 200px; display: block"%> <br> <p>Marca: <%= auto.marca %> <br> Modelo: <%= auto.modelo %> <br> <% if auto.tipo_de_motor == "Combustion" %> Combustible: <%= auto.porcentaje_tanque %> L <% else%> Carga: <%= auto.porcentaje_tanque %>% <%end%> <br> Autonomia: <%= auto.autonomia %> KM <br> <%= link_to "Mas informacion", auto %> <br> <%= form_tag("/autos/actualizar_datos", method: "get") do %><%= hidden_field_tag(:auto_id, auto.id) %><%= submit_tag("Actualizar") %><% end %></p>'},
+                        'geometry': {'type': 'Point', 'coordinates': ['<%= auto.ubicacion.y %>', '<%= auto.ubicacion.x %>']}
+                        },
+                    <% end %>
+                <% end %>
+                <% if alquilando? %>
+                    {
+                    'type': 'Feature',
+                    'properties': {'description': '<%= image_tag alquiler_actual.auto.foto, style: "height: 100px; width: 200px; display: block"%> <br> <p>Marca: <%= alquiler_actual.auto.marca %> <br> Modelo: <%= alquiler_actual.auto.modelo %> <br> Carga: <%= alquiler_actual.auto.porcentaje_tanque %>% <br> Autonomia: <%= alquiler_actual.auto.autonomia %> KM <br> <%= link_to "Mas informacion", alquiler_actual.auto %> <br> <%= form_tag("/autos/actualizar_datos", method: "get") do %><%= hidden_field_tag(:auto_id, alquiler_actual.auto.id) %><%= submit_tag("Actualizar") %><% end %></p>'},
+                    'geometry': {'type': 'Point', 'coordinates': ['<%= alquiler_actual.auto.ubicacion.y %>', '<%= alquiler_actual.auto.ubicacion.x %>']}
+                    },
+                <% end %>
+            <% end %>  
+        ]
+        }
+    });
+
+    map.addLayer({
+        'id': 'circle',
+        'type': 'circle',
+        'source': 'points',
+        'paint': {
+        'circle-color': '#4264fb',
+        'circle-radius': 12,
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#ffffff'
+        }
+    });
+
+    map.on('click', 'circle', (e) => {
+
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        const description = e.features[0].properties.description;
+        
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+        
+        new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(description)
+        .addTo(map);
+    });
+    
+    map.on('mouseenter', 'circle', () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+    
+    map.on('mouseleave', 'circle', () => {
+        map.getCanvas().style.cursor = '';
+    });
+  });
+</script>

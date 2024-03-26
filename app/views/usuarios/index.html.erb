@@ -1,0 +1,13 @@
+<% if usuario_logueado? %>
+    <% if !usuario_actual.validado %>
+        <% flash.now.notice="Debe validar sus documentos para poder alquilar un auto" %>
+    <% end %>
+<% end %>
+
+<% flash.each do |tipo, msj| %>
+    <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+        <%= msj %>
+    </div>
+<% end %>
+
+<h1>Bienvenido a Alquilapp</h1>

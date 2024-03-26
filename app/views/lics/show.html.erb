@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @lic %>
+
+<div>
+  <%= link_to "Edit this lic", edit_lic_path(@lic) %> |
+  <%= link_to "Back to lics", lics_path %>
+
+  <%= button_to "Destroy this lic", @lic, method: :delete %>
+</div>

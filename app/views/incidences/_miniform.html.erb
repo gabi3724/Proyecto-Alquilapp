@@ -1,0 +1,21 @@
+<% @incidence= Incidence.new %>
+<!-- Este miniform tiene el defecto de que no puede mostrar errores acá, porque se lo
+    llama desde autos show. Si está en incidences new, entonces no hay problema -->
+<div>
+    <div class="w-50">
+        <%= form_with model: @incidence do |f| %>
+            <div class="mb-3">
+                <%= f.label :foto, "Subir una imagen", class:"form-label" %>
+                <%= f.file_field :foto, :accept => 'image/jpeg, image/png', class:"form-control"%>
+            </div>
+            <div class="mb-3">
+                <%= f.label :descripcion, "Descripción:", class:"form-label" %>
+                <%= f.text_area :descripcion, placeholder: "Descripción",class:"form-control" %>
+            </div>
+            <%= f.hidden_field(:auto_id, value: @auto.id) %>
+            <div class="mb-3 d-flex justify-content-center">
+                <%= f.submit "Agregar", class: "btn btn-primary-orange w-25" %>
+            </div>
+        <% end %>
+    </div>
+</div>

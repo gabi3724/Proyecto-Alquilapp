@@ -1,0 +1,91 @@
+<div class="container mt-2">
+
+<% if !@cambios %>
+    <h3> No realizó ningún cambio </h3>
+    <%= link_to "Volver atras", {controller: "autos", action: "editar", id: @auto.id}, class: "btn btn-danger" %>
+<% else %>
+    <h3> Está a punto de cambiar los siguientes datos </h3>
+
+    <table class="table">
+    <thead>
+        <tr>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if @auto.patente!=params[:patente] %>
+            <tr>
+            <td>Patente</td>
+            <td class="text-danger text-decoration-line-through"><%= @auto.patente %></td>
+            <td class="text-success"><%= params[:patente] %></td>
+            </tr>
+        <% end %>
+        <% if @auto.marca!=params[:marca] %>
+            <tr>
+            <td>Marca</td>
+            <td class="text-danger text-decoration-line-through"><%= @auto.marca %></td>
+            <td class="text-success"><%= params[:marca] %></td>
+            </tr>
+        <% end %>
+        <% if @auto.modelo!=params[:modelo] %>
+            <tr>
+            <td>Modelo</td>
+            <td class="text-danger text-decoration-line-through"><%= @auto.modelo %></td>
+            <td class="text-success"><%= params[:modelo] %></td>
+            </tr>
+        <% end %>
+        <% if @auto.color!=params[:color] %>
+            <tr>
+            <td>Color</td>
+            <td class="text-danger text-decoration-line-through"><%= @auto.color %></td>
+            <td class="text-success"><%= params[:color] %></td>
+            </tr>
+        <% end %>
+        <% if @auto.tipo_de_caja!=params[:tipo_de_caja] %>
+            <tr>
+            <td>Tipo de caja</td>
+            <td class="text-danger text-decoration-line-through"><%= @auto.tipo_de_caja %></td>
+            <td class="text-success"><%= params[:tipo_de_caja] %></td>
+            </tr>
+        <% end %>
+        <% if @auto.tipo_de_motor!=params[:tipo_de_motor] %>
+            <tr>
+            <td>Tipo de motor</td>
+            <td class="text-danger text-decoration-line-through"><%= @auto.tipo_de_motor %></td>
+            <td class="text-success"><%= params[:tipo_de_motor] %></td>
+            </tr>
+        <% end %>
+        <% if @auto.autonomia!=params[:autonomia] %>
+            <tr>
+            <td>Autonomía</td>
+            <td class="text-danger text-decoration-line-through"><%= @auto.autonomia %></td>
+            <td class="text-success"><%= params[:autonomia] %></td>
+            </tr>
+        <% end %>
+        <% if @auto.como_cargar!=params[:como_cargar] %>
+            <tr>
+            <td>Como cargar</td>
+            <td class="text-danger text-decoration-line-through"><%= @auto.como_cargar %></td>
+            <td class="text-success"><%= params[:como_cargar] %></td>
+            </tr>
+        <% end %>
+    </tbody>
+    </table>
+
+    <%= form_with model: @auto do |f| %>
+        <%= f.hidden_field :patente, value: params[:patente] %>
+        <%= f.hidden_field :marca, value: params[:marca] %>
+        <%= f.hidden_field :modelo, value: params[:modelo] %>
+        <%= f.hidden_field :color, value: params[:color] %>
+        <%= f.hidden_field :tipo_de_caja, value: params[:tipo_de_caja] %>
+        <%= f.hidden_field :autonomia, value: params[:autonomia] %>
+        <%= f.hidden_field :tipo_de_motor, value: params[:tipo_de_motor] %>
+        <%= f.hidden_field :como_cargar, value: params[:como_cargar] %>
+        <p>¿Desea efectuar los cambios?</p>
+        <%= f.submit "Confirmar", class: "btn btn-success" %>
+        <%= link_to "Cancelar", {controller: "autos", action: "editar", id: @auto.id}, class: "btn btn-danger" %>
+    <% end %>
+<% end %>
+</div>

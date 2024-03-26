@@ -1,0 +1,27 @@
+<script type="text/javascript">
+    function delayedRedirect(){
+        var url = "http://localhost:3000/advertencia"
+        if (window.location == url)
+            window.location = "<%= alquiler_path(@alquiler) %>"
+        end
+    }
+    setTimeout('delayedRedirect()', 30000)
+</script>
+<div class="d-flex justify-content-center">
+    <div class="w-0">
+        <br><br>
+        <h1 align="center">Aviso</h1>
+        <p align="center" >¿Desea terminar el alquiler?</p>
+        <p align="center" >Se le cobraran <% if @alquiler.porcentaje_tanque_inicial > @alquiler.auto.porcentaje_tanque %> $<%= (@alquiler.porcentaje_tanque_inicial - @alquiler.auto.porcentaje_tanque)*Costo.first.combustible %> <% else %> $0 <% end %> por la diferencia del combustible</p>
+        <table  align="center" cellspacing="20" cellpadding="20">
+            <tr>
+                <td>
+                    <%= link_to "Cancelar", @alquiler, class: "btn btn-primary-orange w-100", align: "center" %>
+                </td>
+                <td>
+                    <%= button_to "Confirmar", @alquiler, method: :delete, class: "btn btn-primary-orange", align: "center" %>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

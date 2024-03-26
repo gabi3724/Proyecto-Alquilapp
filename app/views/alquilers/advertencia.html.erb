@@ -1,0 +1,27 @@
+<script type="text/javascript">
+    function delayedRedirect(){
+        var url = "http://localhost:3000/advertencia"
+        if (window.location == url)
+            window.location = "<%= alquiler_path(@alquiler) %>"
+        end
+    }
+    setTimeout('delayedRedirect()', 30000)
+</script>
+<div class="d-flex justify-content-center">
+    <div class="w-0">
+        <br><br>
+        <h1 align="center" style="color:red;" >Advertencia</h1>
+        <p align="center" >Está intentando terminar el alquiler fuera de la plata, tenga en cuenta que se le cobrara el acarreo del auto</p>
+        <p align="center" >¿aún está seguro de querer hacerlo?</p>
+        <table  align="center" cellspacing="20" cellpadding="20">
+            <tr>
+                <td>
+                    <%= link_to "Cancelar", @alquiler, class: "btn btn-primary-orange w-100" %>
+                </td>
+                <td>
+                    <%= link_to "Confirmar", eliminar_path, class: "btn btn-primary-orange w-40" %>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

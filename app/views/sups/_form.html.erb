@@ -1,0 +1,21 @@
+<div class="d-flex justify-content-center">
+    <div class="w-50">
+        <%= form_with model: @sup do |f| %>
+            <div class="mb-3">
+                <%= f.label :dni, "DNI:", class:"form-label" %>
+                <%= f.text_field :dni, placeholder: "DNI",class:"form-control" %>
+            </div>
+            <div class="mb-3">
+                <%= f.label :password, "Contraseña:", class:"form-label" %>
+                <%= f.password_field :password, placeholder: "Contraseña",class:"form-control" %>
+            </div>
+            <div class="mb-3">
+                <%= f.label :fecha_nacimiento, "Fecha de nacimiento:", class:"form-label" %>
+                <%= f.date_field :fecha_nacimiento, min: Date.new(1920,01,01), max: 18.years.ago, class:"form-control w-35 text-center" %>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                <%= f.submit "Registrar", class: "btn btn-primary-orange w-25" %>
+            </div>
+        <% end %>
+    </div>
+</div>

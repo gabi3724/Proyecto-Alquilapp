@@ -1,0 +1,138 @@
+<% flash.each do |tipo, msj| %>
+    <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+        <%= msj %>
+    </div>
+<% end %>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h3 class="mb-5">Información del auto</h3>
+        </div>
+        <% if admin_logueado? %>
+            <% if !@auto.alquilado %>
+                <div class="col col-md-2">
+                    <%= link_to "Editar información", {controller: "autos", action: "editar", id: @auto.id}, class: "btn btn-primary" %>
+                </div>
+                <div class="col" style="flex: 0 0 auto; width:11.7%">
+                    <%= link_to "Editar foto", {controller: "autos", action: "editar_foto", id: @auto.id}, class: "btn btn-primary" %>
+                </div>
+                <div class="col col-md-2">
+                    <%= link_to "Quitar auto", {controller: "autos", action: "confirmar", id: @auto.id}, class: "btn btn-danger" %>
+                </div>
+            <% end %>
+        <% end %>
+    </div>
+
+    <% if @auto.foto.attached? %>
+        <div class="mb-5 d-flex justify-content-center">
+            <%= image_tag @auto.foto ,class:"img-fluid"%> 
+        </div>
+    <% end %>
+    <div class="row">
+        <div class="col">
+            <h5 class="row mb-3"> Patente: </h5>
+            <h5 class="row mb-3"> Marca: </h5>
+            <h5 class="row mb-3"> Modelo: </h5>
+            <h5 class="row mb-3"> Color: </h5>
+        </div>
+        <div class="col col-md-3">
+            <div class="row"> <p class="text-center"> <%= @auto.patente %> </p> </div>
+            <div class="row"> <p class="text-center"> <%= @auto.marca %> </p> </div>
+            <div class="row"> <p class="text-center"> <%= @auto.modelo %> </p> </div>
+            <div class="row"> <p class="text-center"> <%= @auto.color %> </p> </div>
+        </div>
+        <div class="col">
+            <h5 class="row mb-3"> Tipo de caja de cambios: </h5>
+            <h5 class="row mb-3"> Tipo de motor: </h5>
+            <h5 class="row mb-3"> Autonomía: </h5>
+            <% if @auto.tipo_de_motor == "Electrico" %>
+                <h5 class="row mb-3"> Carga: </h5>
+            <% else %>
+                <h5 class="row mb-3"> Combustible: </h5>
+            <% end %>
+        </div>
+        <div class="col col-md-2">
+            <div class="row"> <p class="text-center"> <%= @auto.tipo_de_caja %> </p> </div>
+            <div class="row"> <p class="text-center"> <%= @auto.tipo_de_motor %> </p> </div>
+            <div class="row"> <p class="text-center"> <%= @auto.autonomia %> KM </p> </div>
+            <div class="row"> <p class="text-center"> <%= @auto.porcentaje_tanque %> <% if @auto.tipo_de_motor == "Electrico" %> % <% else %> L <%end%> </p> </div>
+        </div>
+        <div class="col text-center px-0">
+            <h5> Cómo cargar:</h5>
+            <%= @auto.como_cargar %>
+        </div>
+    </div>
+    <% if usuario_logueado? %>
+        <% if usuario_actual.validado  %>               
+            <% if !@auto.alquilado && !alquilando? %>
+                <%= form_tag("/alquiler/confirmarAlquiler", method: "get") do %>
+                    <div class="row mb-5">
+                        <h3 class="mt-4 mb-3">Alquilar auto</h3>
+                        <div class="col col-md-3">
+                            <label for="horas" class="form-label">Seleccione la cantidad de horas</label>
+                        </div>
+                        <div class="col col-md-1">
+                            <%= select_tag(:horas, options_for_select(1..24), class:"form-select") %>
+                        </div>
+                        <%= hidden_field_tag(:auto_id, @auto.id) %>
+                        <div class="col">
+                            <%= submit_tag("Alquilar", class:"btn btn-dark") %>
+                        </div>
+                    </div>
+                <% end %>
+            <% elsif  alquilando? %>
+                <% if alquiler_actual.auto == @auto %>
+                    <h5 class="mt-5 mb-5">Usted está alquilando este auto</h5>
+                <% else %>
+                    <h5 class="mt-5 mb-5">Usted está alquilando otro auto</h5>
+                <% end %>
+            <% else %>
+                <h5 class="mt-5 mb-5">Alguien más está alquilando este auto</h5>
+            <% end %>
+        <% else %>
+            <h3 class="mt-4 mb-3">Alquilar auto</h3>
+            <h5 class="mt-5 mb-5">Debe validar su cuenta para poder alquilar un auto</h5>
+        <% end %>
+    <% end %>
+    <h3 class="mt-4 mb-5">Incidencias</h3>
+    <% if @auto.incidences.any? %>
+        <% @auto.incidences.each do |incidence| %>
+            <div class="row">
+                <div class="col col-md-11">
+                    <% if sup_logueado? || admin_logueado? %>
+                        <div class="row mt-3 mb-3">
+                            <%= image_tag incidence.foto %>
+                        </div>
+                    <% end %>
+                    <div class="row">
+                        <p>
+                            -<%= incidence.descripcion %>
+                        </p>
+                    </div>
+                </div>
+                <% if sup_logueado? || admin_logueado? %>
+                    <div class="col mt-3">
+                        <%= form_tag confirmar_borrar_incidencia_path, method: "get" do%>
+                            <%= hidden_field_tag :id, incidence.id %>
+                            <%= submit_tag "Borrar", class: "btn btn-danger row" %>
+                        <% end %>
+                    </div>
+                <% end %>
+            </div>
+        <% end %>
+    <% else %>
+        <h5 class="mb-5">El auto no tiene incidencias</h5>
+    <% end %>
+
+    <% if sup_logueado? || admin_logueado? %>
+        <%= form_tag new_incidence_path, method: "get" do%>    
+            <%= hidden_field_tag :auto_id, @auto.id %>
+            <div class="d-flex justify-content-center mb-3">   
+                <%= submit_tag "Agregar incidencia", class: "btn btn-success w-25" %>
+            </div>
+        <% end %>
+    <% end %>
+
+    <%= link_to "Volver al mapa", root_path, class: "btn btn-primary-orange mt-3 mb-2" %>
+
+</div>

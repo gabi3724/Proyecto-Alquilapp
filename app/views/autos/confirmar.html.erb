@@ -1,0 +1,35 @@
+<h1 class="text-center mt-3">Confirmación</h1>
+
+<div class="d-flex justify-content-center mb-4">
+    <div class="col col-md-8">
+        <h5 class="mb-5 text-center">Está por eliminar este auto</h5>
+        <div class="row d-flex justify-content-center mb-4">
+            <div class="col col-md-2">
+                <h5 class="row mb-4"> Patente: </h5>
+                <h5 class="row mb-4"> Marca: </h5>
+                <h5 class="row mb-4"> Modelo: </h5>
+                <h5 class="row mb-4"> Color: </h5>
+            </div>
+            <div class="col col-md-3">
+                <div class="row mb-2"> <p class="text-center"> <%= @auto.patente %> </p> </div>
+                <div class="row mb-2"> <p class="text-center"> <%= @auto.marca %> </p> </div>
+                <div class="row mb-2"> <p class="text-center"> <%= @auto.modelo %> </p> </div>
+                <div class="row mb-2"> <p class="text-center"> <%= @auto.color %> </p> </div>
+            </div>
+            <div class="col col-md-5">
+                <%= image_tag @auto.foto, class:"img-fluid row"%>
+            </div>
+        </div>
+        <h5 class="text-center">¿Desea hacerlo?</h5>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="row">
+        <div class="col">
+            <%= link_to "Cancelar", auto_path(@auto), class: "btn btn-primary-orange" %>
+        </div>
+        <div class="col">
+            <%= button_to "Quitar", auto_path(@auto), :method => :delete, class: "btn btn-danger" %>
+        </div>
+    </div>
+</div>

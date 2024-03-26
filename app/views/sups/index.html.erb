@@ -1,0 +1,30 @@
+<% flash.each do |tipo, msj| %>
+    <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2 mb-3" role="alert">
+        <%= msj %>
+    </div>
+<% end %>
+<div class="container mt-2">
+    <% if @sups.count > 0 %>
+        <table class="table table-bordered"">
+        <thead>
+            <tr>
+                <th scope="col">DNI</th>
+                <th scope="col">Fecha de nacimiento</th>
+                <th scope="col"><%= link_to "Agregar supervisor", new_sup_path, class:"btn btn-success btn-sm" %></th>
+            </tr>
+        </thead>
+        <tbody>
+        <% @sups.each do |s| %>
+            <tr>
+                <td><%= s.dni %></td>
+                <td><%= s.fecha_nacimiento.strftime("%d/%m/%y") %></td>
+                <td><%= link_to "Eliminar", {controller: "sups", action: "confirmar", id: s.id}, class: "btn btn-danger btn-sm" %></td>
+            </tr>
+        <% end %>
+        </tbody>
+        </table>
+    <% else %>
+        <h1>No hay supervisores registrados</h1>
+        <%= link_to "Agregar supervisor", new_sup_path, class:"btn btn-success" %>
+    <% end %>
+</div>

@@ -1,0 +1,49 @@
+<div class="container mt-2">
+    <% if @usuarios.count > 0 %>
+        <table class="table table-bordered"">
+        <thead>
+        <tr>
+            <th scope="col">Número de DNI</th>
+            <th scope="col">Licencia</th>
+            <th scope="col">DNI</th>
+            <th scope="col">Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @usuarios.each do |u| %>
+            <% if u.lic.aceptado? && u.doc.aceptado? %>
+            <tr class="table-success">
+            <% elsif !u.lic.en_revision? && !u.doc.en_revision? %>
+            <tr class="table-danger">
+            <% else %>
+            <tr class="table-info">
+            <% end %>
+                <td><%= u.dni %></td>
+                <% if u.lic.aceptado? %>
+                    <td><%= link_to "Validado", {controller: "sups", action: "verLicencia", id: u.id}, class: "btn btn-outline-success btn-sm" %></td>
+                <% elsif u.lic.rechazado? %>
+                    <td><%= link_to "Rechazado", {controller: "sups", action: "verLicencia", id: u.id}, class: "btn btn-outline-danger btn-sm" %></td>
+                <% else %>
+                    <td><%= link_to "Validar", {controller: "sups", action: "verLicencia", id: u.id}, class: "btn btn-outline-info btn-sm" %></td>
+                <% end %>
+                <% if u.doc.aceptado? %>
+                    <td><%= link_to "Validado", {controller: "sups", action: "verDni", id: u.id}, class: "btn btn-outline-success btn-sm" %></td>
+                <% elsif u.doc.rechazado? %>
+                    <td><%= link_to "Rechazado", {controller: "sups", action: "verDni", id: u.id}, class: "btn btn-outline-danger btn-sm" %></td>
+                <% else %>
+                    <td><%= link_to "Validar", {controller: "sups", action: "verDni", id: u.id}, class: "btn btn-outline-info btn-sm" %></td>
+                <% end %>
+                <% if u.lic.aceptado? && u.doc.aceptado? %>
+                    <td><%= link_to "Dar alta", {controller: "sups", action: "darAlta", id: u.id, tipo: "alta"}, class: "btn btn-outline-dark btn-sm" %></td>
+                <% elsif !u.lic.en_revision? && !u.doc.en_revision? %>
+                    <td><%= link_to "Terminar evaluación", {controller: "sups", action: "darAlta", id: u.id, tipo: "rechazo"}, class: "btn btn-outline-dark btn-sm" %></td>
+                <% end %>
+            </tr>
+        <% end %>
+        </tbody>
+        </table>
+    <% else %>
+        <h1>No hay clientes por validar</h1>
+    <% end %>
+
+</div>

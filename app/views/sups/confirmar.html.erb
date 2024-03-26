@@ -1,0 +1,12 @@
+
+<div class="container mt-4">
+    <% if @sup.problema.nil? %>
+        <h1>Eliminar supervisor</h1>
+        <p>Esta a punto de eliminar al supervisor con DNI <%= @sup.dni %></p>
+        <p>¿Está seguro de querer hacerlo?</p>
+        <%= link_to "Confirmar", sup_path(@sup), data: { "turbo-method": :delete }, class: "btn btn-success" %>
+        <%= link_to "Cancelar", sups_path, class: "btn btn-danger" %>
+    <% else %>
+        <p>El supervisor <%= @sup.dni %> esta solucionando el problema de un cliente en estos momentos</p>
+    <% end %>       
+</div>

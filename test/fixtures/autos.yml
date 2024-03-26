@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  patente: MyString
+  marca: MyString
+  modelo: MyString
+  color: MyString
+  tipo_de_caja: MyString
+  tipo_de_motor: MyString
+  autonomia: MyString
+  como_cargar: MyText
+  porcentaje_tanque: 1
+  encendido: false
+  alquilado: false
+  ubicacion: 
+
+two:
+  patente: MyString
+  marca: MyString
+  modelo: MyString
+  color: MyString
+  tipo_de_caja: MyString
+  tipo_de_motor: MyString
+  autonomia: MyString
+  como_cargar: MyText
+  porcentaje_tanque: 1
+  encendido: false
+  alquilado: false
+  ubicacion: 

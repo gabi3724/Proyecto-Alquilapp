@@ -1,0 +1,25 @@
+<h1 class="text-center mb-3 mt-5">Iniciar de sesión</h1>
+
+<% flash.each do |tipo, msj| %>
+    <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+        <%= msj %>
+    </div>
+<% end %>
+
+<div class="d-flex justify-content-center">
+    <div class="w-50">
+        <%= form_tag login_path do%>    
+            <div class="mb-3">
+                <%= label_tag :dni, "DNI:", class:"form-label" %>
+                <%= text_field_tag :dni, nil, placeholder:"DNI", class:"form-control" %>
+            </div>
+            <div class="mb-3">
+                <%= label_tag :password, "Contraseña:", class:"form-label" %>
+                <%= password_field_tag :password, nil, placeholder: "Contraseña", class:"form-control" %>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                <%= submit_tag "Ingresar", class: "btn btn-primary-orange w-25" %>
+            </div>
+        <% end %>
+    </div>
+</div>

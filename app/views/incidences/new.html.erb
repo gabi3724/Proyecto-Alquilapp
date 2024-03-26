@@ -1,0 +1,27 @@
+<h1 class="text-center mb-3">Agregar incidencia</h1>
+
+<% if @incidence.errors.any? %>
+    <% @incidence.errors.full_messages.each do |msj| %>
+        <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+            <%= msj %>
+        </div>
+    <% end %>
+<% end %>
+
+<div class="d-flex justify-content-center">
+    <div class="w-75">
+        <%= form_with model: @incidence do |f| %>
+            <div class="mb-3">
+                <%= f.label :foto, "Subir una imagen", class:"form-label" %>
+                <%= f.file_field :foto, :accept => 'image/jpeg, image/png', class:"form-control"%>
+            </div>
+            <div class="mb-3">
+                <%= f.label :descripcion, "Descripción:", class:"form-label" %>
+                <%= f.text_area :descripcion, placeholder: "Descripción",class:"form-control" %>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                <%= f.submit "Agregar", class: "btn btn-primary-orange w-25" %>
+            </div>
+        <% end %>
+    </div>
+</div>

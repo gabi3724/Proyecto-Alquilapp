@@ -1,0 +1,63 @@
+<h1 class="text-center mb-3">Editar información de auto</h1>
+
+<% if @auto.errors.any? %>
+    <div class="mb-3">
+        <% @auto.errors.full_messages.each do |msj| %>
+            <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+                <%= msj %>
+            </div>
+        <% end %>
+    </div>
+<% end %>
+
+<div class="d-flex justify-content-center">
+    <div class="w-75">
+        <%= form_tag editar_preview_path, method: "get" do%>
+            <%= hidden_field_tag(:id, @auto.id) %>
+            <div class="mb-3 row">
+                <div class="mb-3 col">
+                    <%= label_tag :patente, "Patente:", class:"form-label" %>
+                    <%= text_field_tag 'patente', @auto.patente, placeholder: 'Patente (sin espacios y con letras en mayúscula)', class:"form-control" %>
+                </div>
+                <div class="mb-3 col">
+                    <%= label_tag :marca, "Marca:", class:"form-label" %>
+                    <%= text_field_tag 'marca', @auto.marca, placeholder: 'Marca', class:"form-control col" %>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="mb-3 col">
+                    <%= label_tag :modelo, "Modelo:", class:"form-label" %>
+                    <%= text_field_tag 'modelo', @auto.modelo, placeholder: 'Modelo', class:"form-control" %>
+                </div>
+                <div class="mb-3 col">
+                    <%= label_tag :color, "Color:", class:"form-label" %>
+                    <%= text_field_tag 'color', @auto.color, placeholder: 'Color', class:"form-control" %>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="mb-3 col">
+                    <%= label_tag :tipo_de_caja, "Tipo de caja:", class:"form-label" %>
+                    <%= select_tag "tipo_de_caja", options_for_select([ "Manual", "Automática" ], @auto.tipo_de_caja), class:"form-select text-center" %>
+                </div>
+                <div class="mb-3 col">
+                    <%= label_tag :autonomia, "Autonomía:", class:"form-label" %>
+                    <%= text_field_tag 'autonomia', @auto.autonomia, placeholder: 'Autonomía en KM', class:"form-control" %>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="mb-3 col">
+                    <%= label_tag :tipo_de_motor, "Tipo de motor:", class:"form-label" %>
+                    <%= select_tag "tipo_de_motor", options_for_select([['Combustión', 'Combustion'], ['Eléctrico', 'Electrico']], @auto.tipo_de_motor), class:"form-select text-center" %>
+                </div>
+                <div class="mb-3 col">
+                    <%= label_tag :como_cargar, "Cómo cargarlo:", class:"form-label" %>
+                    <%= text_area_tag 'como_cargar', @auto.como_cargar, placeholder: 'Cómo cargarlo', class:"form-control" %>
+                </div>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                <%= link_to "Cancelar", auto_path(@auto), class: "btn btn-danger mx-2" %>
+                <%= submit_tag "Editar", class: "btn btn-success mx-2" %>
+            </div>
+        <% end %>
+    </div>
+</div>

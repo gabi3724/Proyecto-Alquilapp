@@ -1,0 +1,40 @@
+<h1 class="text-center mb-3">Cambiar contraseña</h1>
+
+<% flash.each do |tipo, msj| %>
+    <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+        <%= msj %>
+    </div>
+<% end %>
+
+<div class="d-flex justify-content-center">
+    <div class="w-50">
+        <%= form_tag update_pass_path, method: "get" do%>    
+            <div class="mb-3">
+                <%= label_tag :act_pass, "Contraseña actual:", class:"form-label" %>
+                <%= password_field_tag :act_pass, nil, placeholder: "Contraseña actual", class:"form-control" %>
+            </div>
+            <div class="mb-3">
+                <%= label_tag :new_pass, "Nueva contraseña:", class:"form-label" %>
+                <%= password_field_tag :new_pass, nil, placeholder: "Nueva contraseña", class:"form-control" %>
+            </div>
+            <div class="mb-3">
+                <%= label_tag :confirmation_pass, "Vuelva a escribir nueva contraseña:", class:"form-label" %>
+                <%= password_field_tag :confirmation_pass, nil, placeholder: "Confirmación de contraseña", class:"form-control" %>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                <!--
+                <% if usuario_logueado? %>
+                    <%= link_to "Cancelar", edit_usuario_path(@editor), class: "btn btn-danger mx-2" %>  
+                <% elsif sup_logueado? %>
+                    <%= link_to "Cancelar", edit_sup_path(@editor), class: "btn btn-danger mx-2" %>  
+                <% elsif admin_logueado? %>
+                    <%= link_to "Cancelar", edit_admin_path(@editor), class: "btn btn-danger mx-2" %>  
+                <% end %>
+                -->
+                
+                <%= link_to "Cancelar", edit_perfil_path, class: "btn btn-danger mx-2" %>
+                <%= submit_tag "Guardar", class: "btn btn-success mx-2" %>
+            </div>
+        <% end %>
+    </div>
+</div>

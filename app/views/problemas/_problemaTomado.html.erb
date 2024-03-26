@@ -1,0 +1,38 @@
+<div class="border-top-0">
+    <div class="row border-top py-3 px-3">
+        <div class="col col-md-3">
+            <%= image_tag problema.foto ,class:"img-fluid"%>
+        </div>
+        <div class="col">
+            <table width="100%">
+                <tr>
+                    <td> <p>Patente: <%= problema.auto.patente %> </p> </td>
+                    <td class="text-end"> <p>Fecha: <%= problema.created_at.strftime("%d/%m/%Y %H:%M:%S") %> </p> </td>
+                </tr>
+            </table>
+            <p> Descripción: <%= problema.descripcion %> </p>
+            <% if problema.resuelto %>
+                <p> Resolución: <%= problema.resolucion %> </p>
+            <% end %>
+        </div>
+        <div class="col col-md-3">
+            <table>
+                <tr>
+                    <td>
+                        <p class="fw-bold"> Estado: <% if problema.resuelto %> resuelto <% else %> en proceso <% end %> </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p> DNI supervisor: <%= problema.sup_dni %> </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p> <% if problema.resuelto %> Fecha resolución: <% else %> Inicio resolución: <% end %> <%= problema.updated_at.strftime("%d/%m/%Y %H:%M:%S") %> </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

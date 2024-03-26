@@ -1,0 +1,33 @@
+<h1 class="text-center mb-3">Agregar problema</h1>
+
+<% if @problema.errors.any? %>
+    <div class="mb-3">
+        <% @problema.errors.full_messages.each do |msj| %>
+            <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+                <%= msj %>
+            </div>
+        <% end %>
+    </div>
+<% end %>
+
+<div class="d-flex justify-content-center">
+    <div class="w-75">
+        <%= form_with model: @problema do |f| %>
+            <div class="mb-3">
+                <div class="mb-3 col">
+                    <%= f.label :descripcion, "Descripcion del problema:", class:"form-label" %>
+                    <%= f.text_area :descripcion, placeholder: "Explique el problema que tuvo con el último auto que alquilo, o que está alquilando...", class: "form-control" %>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="mb-3 col">
+                    <%= f.label :foto, "Subir una imagen", class:"form-label" %>
+                    <%= f.file_field :foto, :accept => 'image/jpeg, image/png', class:"form-control"%>
+                </div>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                <%= f.submit "Agregar", class: "btn btn-primary-orange w-25" %>
+            </div>
+        <% end %>
+    </div>
+</div>

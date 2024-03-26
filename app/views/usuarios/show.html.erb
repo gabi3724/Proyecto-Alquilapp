@@ -1,0 +1,201 @@
+<% flash.each do |tipo, msj| %>
+    <div class="alert alert-success mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+        <%= msj %>
+    </div>
+<% end %>
+<div class="container mt-4">
+    <div class="row mb-5">
+        <div class="col">
+            <h1>Perfil</h1>
+        </div>
+        <div class="col col-md-2">
+            <% if usuario_logueado? && usuario_actual.id == @usuario.id %>
+                <%= link_to "Editar información", edit_perfil_path, class: "btn btn-primary" %>
+            <% end %>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col">
+            <h3 class="row mb-3">Información</h3>
+            <h5 class="row mb-3"> DNI: </h5>
+            <h5 class="row mb-3"> Fecha de nacimiento: </h5>
+            <h5 class="row mb-3"> Cuenta: </h5>
+        </div>
+        <div class="col">
+            <br><br>
+            <div class="row mb-3"> <%= @usuario.dni %> </div>
+            <div class="row mb-3"> <%= @usuario.fecha_nacimiento.to_time.strftime("%e/%m/%Y") %> </div>
+            <% if @usuario.validado %>
+                <% validacion= "Validada"%>
+            <% else %>
+                <% validacion= "No validada" %>
+            <% end %>
+            <div class="row mb-3"> <%= validacion %> </div>
+        </div>
+        <% if @usuario.validado %>
+            <% if !@usuario.card.nil? %>
+                <% numero= @usuario.card.numero %>
+                <% for i in 0..numero.size-5 %>
+                    <% numero[i]="X" %>
+                <% end %>
+                <div class="col">
+                    <h3 class="row mb-3">Tarjeta</h3>
+                    <h5 class="row mb-3"> Número: </h5>
+                    <h5 class="row mb-3"> Fecha de vencimiento: </h5>
+                    <% if vencio_tarjeta(@usuario) %>
+                        <h5 class="row mb-3" style="color:red;">Tarjeta vencida</h5>
+                    <% else %>
+                        <% if usuario_logueado? && usuario_actual.id == @usuario.id %>
+                            <%= link_to "Cargar saldo", cargar_saldo_path ,class: "btn btn-primary-orange row" %>
+                        <% end %>
+                    <% end %>
+                </div>
+                <div class="col">
+                    <br><br>
+                    <div class="row mb-3"> <%= numero %> </div>
+                    <div class="row mb-3"> <%= @usuario.card.fecha_vencimiento.to_time.strftime("%m/%Y") %> </div>
+                    <% if usuario_logueado? && usuario_actual.id == @usuario.id %>
+                        <%= link_to "Quitar tarjeta", confirmarQuitarTarjeta_path ,class: "btn btn-primary-orange row" %>
+                    <% end %>
+                </div>            
+            <% else %>
+                <div class="col">
+                    <h3 class="row mb-3">Tarjeta</h3>
+                    <h6 class="row mb-3"> Aún no has agregado una tarjeta </h6>
+                    <% if usuario_logueado? && usuario_actual.id == @usuario.id %>
+                        <%= link_to "Cargar tarjeta", new_card_path ,class: "btn btn-primary-orange row" %>
+                    <% end %>
+                </div>
+                <div class="col">
+                </div>
+            <% end %>
+        <% else %>
+            <div class="col">
+                <h3 class="row mb-3">Tarjeta</h3>
+                <h6 class="row mb-3"> Para agregar una tarjeta, su cuenta debe estar validada </h6>
+            </div>
+            <div class="col">
+            </div> 
+        <% end %>
+    </div>
+    <div class="row mb-5">
+        <div class="col me-sm-2">
+            <h3 class="row mb-3">Documento</h3>
+            <% if !@usuario.doc.nil? %>
+                <%= image_tag @usuario.doc.foto ,class:"img-fluid row mb-4"%>
+                <% if @usuario.doc.en_revision? %>
+                    <% estado= "EN REVISIÓN" %>
+                <% elsif @usuario.doc.rechazado? %>
+                    <% estado= "RECHAZADO" %>
+                <% elsif @usuario.doc.aceptado? %>
+                    <% estado= "ACEPTADO" %>
+                <%  end%>
+                <% if @usuario.doc.aceptado?%>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="row mb-3">Estado:</h5>
+                            <h5 class="row mb-3"> Fecha de vencimiento: </h5>
+                        </div>
+                        <div class="col">
+                            <div class="row mb-3"> <%= estado %> </div>
+                            <div class="row mb-3"> <%= @usuario.doc.vencimiento.to_time.strftime("%e/%m/%Y") %> </div>
+                        </div>
+                    </div>
+                    <% if vencio_documento(@usuario) %>
+                        <h5 class="row mb-3" style="color:red;"> Documento vencido </h5>
+                        <% if usuario_logueado? && usuario_actual.id == @usuario.id %>
+                            <%= link_to "Subir DNI", new_doc_path ,class: "btn btn-primary-orange row mb-3" %>
+                        <% end %>
+                    <% end %>
+                <% elsif @usuario.doc.rechazado? %>
+                    <div class="row">
+                        <div class="col col-md-2">
+                            <h5 class="row mb-3">Estado:</h5>
+                            <h5 class="row mb-3"> Motivo: </h5>
+                        </div>
+                        <div class="col">
+                            <div class="row mb-3"> <%= estado %> </div>
+                            <div class="row mb-3"> <%= @usuario.doc.descripcion %> </div>
+                        </div>
+                    </div>
+                    <% if usuario_logueado? && usuario_actual.id == @usuario.id %>
+                        <%= link_to "Subir DNI", new_doc_path ,class: "btn btn-primary-orange row mb-3" %>
+                    <% end %>
+                <% else %>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="row mb-3">Estado:</h5>
+                        </div>
+                        <div class="col">
+                            <div class="row mb-3"> <%= estado %> </div>
+                        </div>
+                    </div>
+                <% end %>
+            <% else %>
+                <h6 class="row mb-3"> Aún no has subido tu DNI </h6>
+                <% if usuario_logueado? && usuario_actual.id == @usuario.id %>
+                    <%= link_to "Subir DNI", new_doc_path ,class: "btn btn-primary-orange row mb-3" %>
+                <% end %>
+            <% end %>
+        </div>
+        <div class="col ms-sm-2">
+            <h3 class="row mb-3">Licencia</h3>
+            <% if !@usuario.lic.nil? %>
+                <%= image_tag @usuario.lic.foto ,class:"img-fluid row mb-3"%> 
+                <% if @usuario.lic.en_revision? %>
+                    <% estado= "EN REVISIÓN" %>
+                <% elsif @usuario.lic.rechazado? %>
+                    <% estado= "RECHAZADO" %>
+                <% elsif @usuario.lic.aceptado? %>
+                    <% estado= "ACEPTADO" %>
+                <%  end%>
+                <% if @usuario.lic.aceptado? %>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="row mb-3">Estado:</h5>
+                            <h5 class="row mb-3"> Fecha de vencimiento: </h5>
+                        </div>
+                        <div class="col">
+                            <div class="row mb-3"> <%= estado %> </div>
+                            <div class="row mb-3"> <%= @usuario.lic.vencimiento.to_time.strftime("%e/%m/%Y") %> </div>
+                        </div>
+                    </div>
+                    <% if vencio_licencia(@usuario) %>
+                        <h5 class="row mb-3" style="color:red;"> Licencia vencida </h5>
+                        <% if usuario_logueado? && usuario_actual.id == @usuario.id %>
+                            <%= link_to "Subir licencia", new_lic_path ,class: "btn btn-primary-orange row mb-3" %>
+                        <% end %>
+                    <% end %>
+                <% elsif @usuario.lic.rechazado? %>
+                    <div class="row">
+                        <div class="col col-md-2">
+                            <h5 class="row mb-3">Estado:</h5>
+                            <h5 class="row mb-3"> Motivo: </h5>
+                        </div>
+                        <div class="col">
+                            <div class="row mb-3"> <%= estado %> </div>
+                            <div class="row mb-3"> <%= @usuario.lic.descripcion %> </div>
+                        </div>
+                    </div>
+                    <% if usuario_logueado? && usuario_actual.id == @usuario.id %>
+                        <%= link_to "Subir licencia", new_lic_path ,class: "btn btn-primary-orange row mb-3" %>
+                    <% end %>
+                <% else %>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="row mb-3">Estado:</h5>
+                        </div>
+                        <div class="col">
+                            <div class="row mb-3"> <%= estado %> </div>
+                        </div>
+                    </div>
+                <% end %>
+            <% else %>
+                <h6 class="row mb-3"> Aún no has subido tu licencia </h6>
+                <% if usuario_logueado? && usuario_actual.id == @usuario.id %>
+                    <%= link_to "Subir licencia", new_lic_path ,class: "btn btn-primary-orange row mb-3" %>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+</div>

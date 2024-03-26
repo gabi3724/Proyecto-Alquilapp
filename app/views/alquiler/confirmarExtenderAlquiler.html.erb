@@ -1,0 +1,26 @@
+<div class="container mt-2">
+
+<h1>Confirmación de extensión de alquiler</h1>
+<p>Tarifa por hora: $<%= @tarifa %></p>
+<p>Cantidad de horas a extender: <%= @horas %> </p>
+<p>Costo: $<%= @costo %></p>
+<p>Saldo disponible: $<%= @usuario.creditos %></p>
+<% if (@usuario.creditos-@costo) < 0 %>
+    <p>No tenés suficiente saldo para extender el alquiler</p>
+    <p>Te faltan $<%= (@usuario.creditos-@costo).abs() %></p>
+    <%= link_to "Cargar saldo", cargar_saldo_path, class: "btn btn-success" %>
+    <%= link_to "Cancelar extensión de alquiler", @alquiler, action: "show", class: "btn btn-danger" %>       
+<% else %>
+    <p>Saldo luego de extender el alquiler: $<%= @usuario.creditos-@costo %></p>
+    <p>¿Querés extender el alquiler en <%= @horas %>hs con un costo de $<%= @costo %></p>
+    <%= form_with model: @alquiler do |f| %>
+        <%= hidden_field_tag(:usuario_id, @usuario.id) %>
+        <%= hidden_field_tag(:costo, @costo) %>
+        <%= hidden_field_tag(:horas, @horas) %>
+        <%= hidden_field_tag(:alquiler_id, @alquiler.id) %>
+        <%= submit_tag("Confirmar", :id=>"button", :class=>"btn btn-success") %>
+        <%= link_to "Cancelar", @alquiler, action: "show", class: "btn btn-danger" %>
+    <% end %>
+<% end %>
+
+</div>

@@ -1,0 +1,26 @@
+<div class="container mt-2">
+
+<h1>Confirmación de alquiler</h1>
+<p>Tarifa por hora: $<%= @tarifa %></p>
+<p>Cantidad de horas a alquilar: <%= @horas %> </p>
+<p>Costo: $<%= @costo %></p>
+<p>Saldo disponible: $<%= @usuario.creditos %></p>
+<% if (@usuario.creditos-@costo) < 0 %>
+    <p>No tenés suficiente saldo para alquilar el auto</p>
+    <p>Te faltan $<%= (@usuario.creditos-@costo).abs() %></p>
+    <%= link_to "Cargar saldo", cargar_saldo_path, class: "btn btn-success" %>
+    <%= link_to "Cancelar alquiler", @auto, action: "show", class: "btn btn-danger" %>       
+<% else %>
+    <p>Saldo luego del alquiler: $<%= @usuario.creditos-@costo %></p>
+    <p>¿Querés alquilar el auto <%= @auto.marca %> <%= @auto.modelo %> por <%= @horas %> horas con un costo de $<%= @costo %></p>
+    <%= form_tag( "/alquiler", method: "post") do %>
+        <%= hidden_field_tag(:auto_id, @auto.id) %>
+        <%= hidden_field_tag(:usuario_id, @usuario.id) %>
+        <%= hidden_field_tag(:costo, @costo) %>
+        <%= hidden_field_tag(:horas, @horas) %>
+        <%= submit_tag("Confirmar", :id=>"button", :class=>"btn btn-success", :name=>"submit") %>
+        <%= link_to "Cancelar", @auto, action: "show", class: "btn btn-danger" %>
+    <% end %>
+<% end %>
+
+</div>

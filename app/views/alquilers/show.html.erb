@@ -1,0 +1,84 @@
+<% if @alquiler.horas == 24 %>
+    <br><br>
+<% end %>
+<div class=" mt-2 mb-1">
+    <% flash.each do |type, msg|%>
+        <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+            <%= msg %>
+        </div>
+    <% end %>
+</div>
+
+<div class="row ms-sm-3">
+    <div class="col col-md-5">
+        <h2 class="row mb-3">Alquiler actual</h2>
+        <p class="row mb-3 fs-5"> Auto: <%= @alquiler.auto.marca %> <%= @alquiler.auto.modelo %></p>
+        <p class="row mb-3 fs-5"> Color: <%= @alquiler.auto.color %> </p>
+        <p class="row mb-3 fs-5"> Patente: <%= @alquiler.auto.patente %> </p>
+        <p class="row mb-3 fs-5"> Inicio de alquiler: <%= @alquiler.created_at.to_time.strftime("%e/%m/%y %H:%M") %> </p>
+        <p class="row fs-5"> Fin de alquiler: <%= (@alquiler.created_at + @alquiler.horas.hours).to_time.strftime("%e/%m/%y %H:%M") %> </p>
+
+        <% if @alquiler.horas < 24 %>
+            <%= form_tag("/alquiler/confirmarExtenderAlquiler", method: "get") do %>
+                <div class="row mb-5">
+                    <h3 class="row mb-3">Extender alquiler</h3>
+                    <div class="row">
+                        <div class="col col-md-6 my-auto">
+                            <label for="horas" class="row form-label align-items-center">Seleccione la cantidad de horas</label>
+                        </div>
+                        <div class="col" style="flex: 0 0 auto; width:18%">
+                            <%= select_tag(:horas, options_for_select(1..(24-@alquiler.horas)), class:"form-select") %>
+                        </div>
+                        <%= hidden_field_tag(:alquiler_id, @alquiler.id) %>
+                        <div class="col col-md-2">
+                            <%= submit_tag("Extender", class:"btn btn-dark") %>
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        <% end %>
+        <div class="row mt-3 mb-3 w-75">
+            <%= link_to "Ver más información del auto alquilado", alquiler_actual.auto, class: "btn btn-primary-orange" %>
+        </div>
+        <div class="row mb-3 w-50">
+            <%= link_to "Ver licencia de circulación", licencia_path, class: "btn btn-primary-orange" %>
+        </div>
+        <div style="margin-left: -12px">
+            <div class="row mb-3 ms-0">
+                <% if (@alquiler.created_at + 10.minutes < DateTime.now) || (@alquiler.auto.porcentaje_tanque != @alquiler.porcentaje_tanque_inicial) %>
+                    <%= link_to "Terminar Alquiler", aviso_path, class: "btn btn-primary-orange w-35", id: "btn_scrolltop" %>
+                    <script>
+                        const btn_scrolltop = document.getElementById("btn_scrolltop")
+                        btn_scrolltop.addEventListener('click', () => {
+                        window.scrollTo(0, 0)
+                        })
+                    </script>
+                <% else %>
+                    <div style="margin-left: -12px">
+                        <%= form_tag("/alquiler/cancelarAlquiler", method: "get") do %>
+                            <%= hidden_field_tag(:alquiler_id, @alquiler.id) %>
+                            <%= submit_tag("Cancelar alquiler", class:"btn btn-primary-orange w-35") %>
+                        <% end %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <%if @alquiler.horas < 24%>
+            <div id="map" style="height: 565px; width: 710px"></div>
+        <% else %>
+            <div id="map" style="height: 470px; width: 710px"></div>
+        <% end %>
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiZ2FiaTM3MjQiLCJhIjoiY2w5Zm43enV5MDN0dzNucHUzbnAxaGUxNyJ9.06vvj5pL-rNyNTvGwi1IFA';
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: ['<%= alquiler_actual.auto.ubicacion.y %>', '<%= alquiler_actual.auto.ubicacion.x %>'],
+                zoom: 15
+            });
+            const marker1 = new mapboxgl.Marker().setLngLat(['<%= alquiler_actual.auto.ubicacion.y %>', '<%= alquiler_actual.auto.ubicacion.x %>']).addTo(map); 
+        </script>    
+    </div>
+</div>

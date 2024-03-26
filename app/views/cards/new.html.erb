@@ -1,0 +1,14 @@
+<h1 class="text-center mb-3">Agregar tarjeta</h1>
+
+<% if @card.errors.any? %>
+    <div class="mb-3">
+        <% @card.errors.full_messages.each do |msj| %>
+            <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+                <%= msj %>
+            </div>
+        <% end %>
+    </div>
+<% end %>
+
+<!--<%= render "form", card: @card, status: :see_other %>-->
+<%= render "specialform", status: :see_other %>

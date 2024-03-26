@@ -1,0 +1,17 @@
+<table align="center" cellspacing="20" cellpadding="20" border="5" width="500px">
+    <tr>
+        <td>
+            <u><h3> Licencia provisoria Alquilapp </h3></u>
+            <p>PATENTE: <%= @alquiler.auto.patente%></p>
+            <p>MARCA: <%= @alquiler.auto.marca%></p>
+            <p>MODELO: <%= @alquiler.auto.modelo%></p>
+            <p>USO: Alquiler</p>
+            <p>DNI DEL AUTORIZADO: <%= @alquiler.usuario.dni%></p>
+            <p>VENCIMIENTO: <%= @alquiler.created_at+24.hours  %></p>
+        </td>
+
+    </tr>
+</table>
+<div class="py-2 d-print-none" align="right">
+    <%= link_to "Descargar", "#", class: "btn btn-primary-orange w-30", onclick: "window.print()" %>
+</div>

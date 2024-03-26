@@ -1,0 +1,45 @@
+<h1 class="text-center mb-3">Editar información</h1>
+
+<% flash.each do |tipo, msj| %>
+    <div class="alert alert-warning mx-auto mb-0 text-center w-75 pt-2 pb-2" role="alert">
+        <%= msj %>
+    </div>
+<% end %>
+
+<div class="d-flex justify-content-center">
+    <div class="w-50">
+        <%= form_tag pedir_pass_path, method: "get" do%>    
+            <div class="mb-3">
+                <%= label_tag :dni, "DNI:", class:"form-label" %>
+                <%= text_field_tag :dni, @editor.dni , placeholder:"DNI", disabled: (usuario_logueado? && usuario_actual.validado), class:"form-control" %>
+            </div>
+            <div class="mt-4 mb-4">
+                <label class="form-label">Contraseña:</label>
+                <%= link_to "Cambiar contraseña", edit_pass_path, class: "btn btn-primary mx-3" %>
+            </div>
+            <div class="mb-3">
+                <%= label_tag :fecha_nacimiento, "Fecha de nacimiento:", class:"form-label" %>
+                <% if usuario_logueado? %>
+                    <%= date_field_tag :fecha_nacimiento, @editor.fecha_nacimiento.to_time.strftime("%Y-%m-%d"), min: Date.new(1920,01,01).to_time.strftime("%Y-%m-%d"), max: 21.years.ago.to_time.strftime("%Y-%m-%d") , disabled: usuario_actual.validado, class:"form-control w-35 text-center" %>
+                <% elsif sup_logueado? %>
+                    <%= date_field_tag :fecha_nacimiento, @editor.fecha_nacimiento.to_time.strftime("%Y-%m-%d"), min: Date.new(1920,01,01).to_time.strftime("%Y-%m-%d"), max: 18.years.ago.to_time.strftime("%Y-%m-%d") , class:"form-control w-35 text-center" %>
+                <% elsif admin_logueado? %>
+                    <%= date_field_tag :fecha_nacimiento, @editor.fecha_nacimiento.to_time.strftime("%Y-%m-%d"), min: Date.new(1920,01,01).to_time.strftime("%Y-%m-%d"), class:"form-control w-35 text-center" %>
+                <% end %>
+            </div>
+            <% if usuario_logueado? && usuario_actual.validado %>
+                <div class="col mt-4">
+                    <h6 class="row mb-3 text-center">Como tus documentos ya han sido validados, no podés cambiar ni tu número de documento ni tu fecha de nacimiento, pero aún podés modificar tu contraseña.</h6>
+                    <div class="mb-3 d-flex justify-content-center">
+                        <%= link_to "Volver", @editor, class: "btn btn-primary-orange row" %>
+                    </div>
+                </div>
+            <% else %>
+                <div class="mb-3 d-flex justify-content-center">
+                    <%= link_to "Cancelar", @editor, class: "btn btn-danger mx-2" %>
+                    <%= submit_tag "Guardar cambios", class: "btn btn-success mx-2" %>
+                </div>
+            <% end %>
+        <% end %>
+    </div>
+</div>

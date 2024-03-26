@@ -1,0 +1,21 @@
+<% flash.each do |tipo, msj| %>
+    <div class="alert alert-warning mx-auto mb-3 text-center w-75 pt-2 pb-2" role="alert">
+        <%= msj %>
+    </div>
+<% end %>
+
+<h1 class="text-center mt-3 mb-4">Modificar costo de alquiler</h1>
+<p class="text-center mt-3 mb-4 fs-4">Ingrese el nuevo costo por hora</p>
+
+<div class="d-flex justify-content-center">
+    <%= form_tag confirmar_costo_alquiler_path, method: "get" do %>
+        <div class="mb-4">
+            <%= label_tag :monto, "Costo anterior: $" + @viejo_costo.to_s + " la hora", class:"form-label" %>
+            <%= text_field_tag :monto, nil, placeholder:"(En pesos)", class:"form-control" %>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+            <%= link_to "Cancelar", root_path ,class: "btn btn-primary-orange col px-0 mx-sm-2" %>  
+            <%= submit_tag "Cambiar", class: "btn btn-primary-orange col px-0 mx-sm-2" %>
+        </div>
+    <% end %>
+</div>

@@ -1,0 +1,15 @@
+<h1 class="text-center mt-3">Explicación</h1>
+
+<div class="d-flex justify-content-center mb-4">
+    <div class="col col-md-5">
+        <h5 class="mb-5 text-center">¿Por qué deja el problema?</h5>
+            <%= form_tag dejarProblema_path, method: "get" do%>    
+                <%= hidden_field_tag :problema_id, @problema.id %> 
+                <%= text_area_tag :motivo, nil, required: true, minlength: 25, placeholder:"Motivo (debe contener 25 caracteres como mínimo)", class:"form-control" %>
+                <div class="mt-4 d-flex justify-content-center">
+                    <%= link_to "Cancelar", problema_path(@problema), class: "btn btn-primary-orange mx-3" %>
+                    <%= submit_tag "Dejar problema", class: "btn btn-danger mx-3" %>
+                </div>
+            <% end %>
+    </div>
+</div>

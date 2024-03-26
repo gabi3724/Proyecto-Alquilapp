@@ -1,0 +1,43 @@
+<h1>Autos#index</h1>
+<p>Find me in app/views/autos/index.html.erb</p>
+
+<div class="row mt-2">
+    <div class="col-md-4 col-xxl-3 border">
+        Parte de informacion del auto
+    </div>
+
+    <div class="col-md-8 col-xxl-9 border">
+
+        <div id="map" style="height: 800px;"></div>
+
+        <script>
+        new Mapkick.Map("map", [{"latitude":-34.9209795760276,"longitude":-57.95753203585335,"icon":"car","label":"Peugeot 208"}, {"latitude":-34.91943090888971,"longitude":-57.95142856194611,"icon":"car","label":"Volkswagen Polo"}]);
+        </script>
+        
+        
+        
+        
+        ##var data = [{"id": "bus-1", "lat":"-34.91943090888971","lng":"-57.95142856194611"},{"id": "bus-2", "lat":"-34.9209795760276","lng":"-57.95753203585335"}, {replay: true}];
+
+        ##function fetchData(callback) {
+        ##    var next = data.shift();
+        ##    if (next) {
+        ##        next.icon = "car";
+        ##        next.tooltip = "Ndea";
+        ##        callback([next]);
+        ##    }
+        ##}
+
+        ##new Mapkick.Map("map", fetchData);
+        ##</script>
+
+        ##<% @autos.each do |auto| %>
+            ##<script>
+                ##new Mapkick.Map("map", [{latitude: <%= auto.ubicacion.x %>, longitude: <%= auto.ubicacion.y %>, tooltip: '<%= auto.marca %>'}]);
+                ##new Mapkick.Map("map", [{id: "1", latitude: -34.9209795760276, longitude: -57.95753203585335}, {id: "2", latitude: -34.91943090888971, longitude: -57.95142856194611}]);
+            ##</script>
+        ##<% end %>
+
+    </div>
+</div>
+
