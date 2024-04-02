@@ -13,15 +13,10 @@ Se trata de un proyecto realizado para la materia "Ingeniería de Software" de l
 - Utilización de git en un entorno con varios desarrolladores
 
 # Algunas imagenes del proyecto
-Vista desde el rol de cliente alquilando un auto
-![imagen 1](https://github.com/gabi3724/Proyecto-Alquilapp/tree/main/imagenes/16.png)
-![imagen 2](https://github.com/gabi3724/Proyecto-Alquilapp/tree/main/imagenes/17.png)
-![imagen 3](https://github.com/gabi3724/Proyecto-Alquilapp/tree/main/imagenes/18.png)
-![imagen 4](https://github.com/gabi3724/Proyecto-Alquilapp/tree/main/imagenes/19.png)
-![imagen 5](https://github.com/gabi3724/Proyecto-Alquilapp/tree/main/imagenes/20.png)
-![imagen 6](https://github.com/gabi3724/Proyecto-Alquilapp/tree/main/imagenes/21.png)
-
-
-
-
-
+Vista desde el rol de cliente alquilando un auto. Para ver imagenes desde otros roles acceder a [imagenes](https://github.com/gabi3724/Proyecto-Alquilapp/blob/main/imagenes).
+![imagen 1](https://github.com/gabi3724/Proyecto-Alquilapp/blob/main/imagenes/16.png)
+![imagen 2](https://github.com/gabi3724/Proyecto-Alquilapp/blob/main/imagenes/17.png)
+![imagen 3](https://github.com/gabi3724/Proyecto-Alquilapp/blob/main/imagenes/18.png)
+![imagen 4](https://github.com/gabi3724/Proyecto-Alquilapp/blob/main/imagenes/19.png)
+![imagen 5](https://github.com/gabi3724/Proyecto-Alquilapp/blob/main/imagenes/20.png)
+![imagen 6](https://github.com/gabi3724/Proyecto-Alquilapp/blob/main/imagenes/21.png)
